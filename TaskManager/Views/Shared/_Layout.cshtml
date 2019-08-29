@@ -1,25 +1,33 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer  Localizer
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css?family=Manjari:700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <div class="menu"></div>
     <div class="content">
-        <main role="main">
-            <div class="tasks-list"></div>
-            <div class="right-content">
-                <div class="control-panel">
+        <div class="main-content">
+            <main role="main">
+                <div class="left-content">
+                    <div class="tasks-list"></div>
+                    <div class="new-task-action"><a>@Localizer["NewTaskAction"]</a></div>
+                </div>
+                <div class="right-content">
+                    <div class="control-panel">
 
+                    </div>
+                    <div class="task-content">
+                        @RenderBody()
+                    </div>
                 </div>
-                <div class="task-content">
-                    @RenderBody()
-                </div>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 
 

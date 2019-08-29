@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NewTaskAction" xml:space="preserve">
+    <value>Добавить задачу</value>
+    <comment>Кнопка для добавления новой задачи</comment>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Управление задачами</value>
     <comment>Название вкладки на главной странице</comment>
