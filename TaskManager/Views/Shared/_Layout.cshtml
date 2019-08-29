@@ -7,10 +7,18 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    
-    <div>
+    <div class="menu"></div>
+    <div class="content">
         <main role="main">
-            @RenderBody()
+            <div class="tasks-list"></div>
+            <div class="right-content">
+                <div class="control-panel">
+
+                </div>
+                <div class="task-content">
+                    @RenderBody()
+                </div>
+            </div>
         </main>
     </div>
 
