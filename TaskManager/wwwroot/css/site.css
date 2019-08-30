@@ -4,7 +4,7 @@
 html {
   min-width: 1000px;
   min-height: 620px;
-  font-family: 'Manjari', sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 .menu {
   width: 60px;
@@ -36,7 +36,7 @@ html {
 .left-content,
 .control-panel,
 .task-content {
-  box-shadow: rgba(255, 139, 71, 0.3) 0 0 0 2px;
+  box-shadow: rgba(255, 139, 71, 0.3) 0 0 5px 0;
 }
 .left-content {
   width: 30%;
@@ -68,4 +68,13 @@ html {
   width: 100%;
   height: 50px;
   background-color: #ff8b47;
+  text-align: center;
+}
+.new-task-action a {
+  line-height: 50px;
+  color: white;
+  display: block;
+  text-transform: uppercase;
+  font-size: 20px;
+  cursor: pointer;
 }
