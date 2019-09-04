@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="menu"></div>
+    <div class="menu">
+        <a asp-controller="Home" asp-action="Index">Главная</a>
+    </div>
     <div class="content">
         <div class="main-content">
             <main role="main">
                 <div class="left-content">
-                    <div class="tasks-list"></div>
-                    <div class="new-task-action">
-                        <a asp-controller="Home" asp-action="Create">@ViewData["NewTaskAction"]</a>
-                    </div>
+                    @RenderSection("Tasks", required: false)
                 </div>
                 <div class="right-content">
                     <div class="control-panel">

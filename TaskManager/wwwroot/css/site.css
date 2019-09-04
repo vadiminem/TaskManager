@@ -33,11 +33,6 @@ html {
   min-height: 500px;
   float: left;
 }
-.left-content,
-.control-panel,
-.task-content {
-  box-shadow: rgba(255, 139, 71, 0.3) 0 0 5px 0;
-}
 .left-content {
   width: 30%;
   min-width: 200px;
@@ -77,4 +72,5 @@ html {
   text-transform: uppercase;
   font-size: 20px;
   cursor: pointer;
+  text-decoration: none;
 }
