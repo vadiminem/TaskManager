@@ -13,8 +13,10 @@ html {
     min-width: 1000px;
     min-height: 620px;
     //font-family: 'Manjari', sans-serif;
-    font-family: 'Roboto Condensed', sans-serif;
+    //font-family: 'Roboto Condensed', sans-serif;
+    font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 }
+
 
 .menu {
     width: @menu-width;
@@ -73,12 +75,66 @@ html {
     height: calc(@content-height - 65px);
     min-height: 440px;
     margin-top: 15px;
+
+
+    form {
+        input, textarea {
+            background-color: white;
+            line-height: 25px;
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 17px;
+        }
+
+        .form-submit {
+            background-color: @base-color;
+            color: white;
+            text-transform: uppercase;
+            font-family: inherit;
+            border: none;
+            font-size: 14px;
+            line-height: 30px;
+        }
+    }
+
+    h1 {
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .task-description {
+        margin-bottom: 20px;
+    }
+
+    p {
+        margin-block-start: 5px;
+        margin-block-end: 5px;
+    }
 }
 
 .tasks-list {
     width: 100%;
     height: calc(@content-height - 50px);
     min-height: 450px;
+
+    ul {
+        display: block;
+        list-style: none;
+        padding-inline-start: 15px;
+    }
+
+    li {
+        display: block;
+
+        span {
+            color: rgba(0, 0, 0, 0.7);
+            cursor: pointer;
+
+            &:hover {
+                color: inherit;
+            }
+        }
+    }
 }
 
 .new-task-action {

@@ -1,0 +1,25 @@
+﻿@model TaskManager.Models.DbTask;
+@{
+    Layout = null;
+}
+
+
+<div class="control-panel">
+    <a asp-controller="Home" asp-action="AddSubtask">Добавить</a>
+    <a asp-controller="Home" asp-action="ChangeStatus">Начать</a>
+    <a>Удалить</a>
+    <a>Удалить</a>
+    <a>Удалить</a>
+    <a>Удалить</a>
+</div>
+<div class="task-content">
+    <h1 class="task-name">@Model.Name</h1>
+    <h3></h3>
+    <p class="task-description">@Model.Description</p>
+    <p class="task-performers">@Model.Performers</p>
+    <p class="task-dates">с @Model.RegistrationDate до @Model.EndDate</p>
+    <p class="task-status"><b>@Model.Status</b></p>
+    <p class="task-labour-input">@Model.LabourInput</p>
+    <p class="task-lead-time">@Model.LeadTime</p>
+</div>
+

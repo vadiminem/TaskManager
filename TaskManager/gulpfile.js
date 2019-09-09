@@ -10,7 +10,7 @@ var paths = {
 };
 
 gulp.task("less", function () {
-    return gulp.src('less/site.less')
+    return gulp.src(paths.webroot + 'less/site.less')
         .pipe(less())
         .pipe(gulp.dest(paths.webroot + '/css'))
 });

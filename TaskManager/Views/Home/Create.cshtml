@@ -1,9 +1,33 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model TaskManager.Models.DbTask
 @inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = @Localizer["Title"];
     ViewData["NewTaskAction"] = @Localizer["NewTaskAction"];
 }
-
-<p>hello world</p>
+<div class="control-panel">
+</div>
+<div class="task-content">
+    <form asp-controller="Home" asp-action="Create">
+        <div>
+            <input type="hidden" asp-for="ParentId" value="@ViewData["ParentId"]" />
+        </div>
+        <div>
+            <input type="text" asp-for="Name" placeholder="@Localizer["FormName"]" />
+        </div>
+        <div>
+            <textarea asp-for="Description" placeholder="@Localizer["FormDescription"]"></textarea>
+        </div>
+        <div>
+            <input type="text" asp-for="Performers" placeholder="@Localizer["FormPerformers"]" />
+        </div>
+        <div>
+            <input type="datetime-local" asp-for="RegistrationDate" placeholder="@Localizer["FormRegistrationDate"]" />
+            <input type="datetime-local" asp-for="EndDate" placeholder="@Localizer["FormEndDate"]" />
+        </div>
+        <div>
+            <input type="submit" class="form-submit" value="@Localizer["FormSubmit"]" />
+        </div>
+    </form>
+</div>

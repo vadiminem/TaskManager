@@ -4,7 +4,7 @@
 html {
   min-width: 1000px;
   min-height: 620px;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 .menu {
   width: 60px;
@@ -54,10 +54,53 @@ html {
   min-height: 440px;
   margin-top: 15px;
 }
+.task-content form input,
+.task-content form textarea {
+  background-color: white;
+  line-height: 25px;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 17px;
+}
+.task-content form .form-submit {
+  background-color: #ff8b47;
+  color: white;
+  text-transform: uppercase;
+  font-family: inherit;
+  border: none;
+  font-size: 14px;
+  line-height: 30px;
+}
+.task-content h1 {
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.task-content .task-description {
+  margin-bottom: 20px;
+}
+.task-content p {
+  margin-block-start: 5px;
+  margin-block-end: 5px;
+}
 .tasks-list {
   width: 100%;
   height: calc(80vh - 50px);
   min-height: 450px;
+}
+.tasks-list ul {
+  display: block;
+  list-style: none;
+  padding-inline-start: 15px;
+}
+.tasks-list li {
+  display: block;
+}
+.tasks-list li span {
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+.tasks-list li span:hover {
+  color: inherit;
 }
 .new-task-action {
   width: 100%;

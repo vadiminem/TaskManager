@@ -9,10 +9,6 @@
     <Content Remove="wwwroot\js\site.ts" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="less\site.less" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -21,11 +17,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\less\site.less" />
   </ItemGroup>
 
 

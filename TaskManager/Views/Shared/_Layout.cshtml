@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Red+Hat+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://apple.com/wss/fonts?families=SF+Pro,v2|SF+Pro+Icons,v1" type="text/css" media="all">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
@@ -18,12 +21,8 @@
                     @RenderSection("Tasks", required: false)
                 </div>
                 <div class="right-content">
-                    <div class="control-panel">
+                    @RenderBody()
 
-                    </div>
-                    <div class="task-content">
-                        @RenderBody()
-                    </div>
                 </div>
             </main>
         </div>
@@ -41,7 +40,6 @@
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
         </script>
     </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
