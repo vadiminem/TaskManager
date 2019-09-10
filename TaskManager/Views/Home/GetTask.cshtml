@@ -3,6 +3,7 @@
 @inject IViewLocalizer Localizer
 
 @{
+if(!ViewData["Layout"])
     Layout = null;
     string status = null; 
 
