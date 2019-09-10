@@ -27,11 +27,11 @@ status = Localizer["TaskStatusCompleted"];
 
 
 <div class="control-panel">
-    <a asp-controller="Home" asp-action="AddSubtask">@Localizer["AddSubtask"]</a>
+    <a asp-controller="Home" asp-action="Create" asp-route-id="@Model.Id">@Localizer["AddSubtask"]</a>
     <a asp-controller="Home" asp-action="ChangeStatus">@status</a>
     <a asp-controller="Home" asp-action="ChangeStatus" asp-route-status="@Model.Status">@Localizer["EndTask"]</a>
     <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["EditTask"]</a>
-    <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Remove">@Localizer["RemoveTask"]</a>
+    <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Id">@Localizer["RemoveTask"]</a>
 </div>
 <div class="task-content">
     <h1 class="task-name">@Model.Name</h1>
