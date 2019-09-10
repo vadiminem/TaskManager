@@ -1,15 +1,18 @@
 ﻿@model TaskManager.Models.DbTask;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
     Layout = null;
 }
 
 
 <div class="control-panel">
-    <a asp-controller="Home" asp-action="AddSubtask">Добавить</a>
-    <a asp-controller="Home" asp-action="ChangeStatus">Начать</a>
-    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-status="@Model.Status">Завершить</a>
-    <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
-    <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Remove">Удалить</a>
+    <a asp-controller="Home" asp-action="AddSubtask">@Localizer["AddSubtask"]</a>
+    <a asp-controller="Home" asp-action="ChangeStatus">@Localizer["ChangeStatus"]</a>
+    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-status="@Model.Status">@Localizer["EndTask"]</a>
+    <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["EditTask"]</a>
+    <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Remove">@Localizer["RemoveTask"]</a>
 </div>
 <div class="task-content">
     <h1 class="task-name">@Model.Name</h1>
