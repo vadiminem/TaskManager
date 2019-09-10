@@ -147,4 +147,23 @@
   <data name="TaskTo" xml:space="preserve">
     <value>с</value>
   </data>
+  <data name="AddSubtask" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="ChangeStatusStart" xml:space="preserve">
+    <value>Запустить</value>
+  </data>
+  <data name="ChangeStatusPause" xml:space="preserve">
+    <value>Остановить</value>
+  </data>
+  <data name="EndTask" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="RemoveTask" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+
 </root>
