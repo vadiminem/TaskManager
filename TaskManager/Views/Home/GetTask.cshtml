@@ -4,13 +4,24 @@
 
 @{
     Layout = null;
-    var status = null;
-    if(@Model.Status == 0)
+    var status = null; 
+
+    switch(status)
     {
-        status = @Localizer["ChangeStatusStart"];
+        case @Model.Status.Assigned:
+status = Localizer["ChangeStatusStart"];
+             break;
+case @Model.Status.InProgress:
+status = Localizer["ChangeStatusStart"];
+             break;
+case @Model.Status.Paused:
+status = Localizer["ChangeStatusPause"];
+             break;
+case @Model.Status.Completed:
+status = Localizer["ChangeStatusComplete"];
+             break;
+
     }
-    else if(@Model.Status == 1)
-        status = @Localizer["ChangeStatusPause"];
 }
 
 
