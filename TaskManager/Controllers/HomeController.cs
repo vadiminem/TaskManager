@@ -22,7 +22,7 @@ namespace TaskManager.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetTask(int id)
+        public async Task<IActionResult> GetTask(int id, bool layout = false)
         {
             var task = await db.Tasks.FindAsync(id);
             if (task != null)
@@ -52,8 +52,26 @@ namespace TaskManager.Controllers
             task.LabourInput = task.EndDate - task.RegistrationDate;
             db.Tasks.Add(task);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            var t = await db.FindAsync(t);
+            return RedirectToAction("GetTask", "Home", new {id = t.Id, layout = true});
         }
+
+public async Task<IActionResult> ChangeStatus(int id, Status status)
+{
+    var task = await db.FindAsync(id);
+/*if(status != task.Status.Completed)
+{
+    if(task.Status == status)
+{}
+else if(status == Status.Completed)
+{}
+}
+else 
+{
+if(status)
+}*/
+
+}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
