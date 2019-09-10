@@ -7,10 +7,9 @@
 <div class="control-panel">
     <a asp-controller="Home" asp-action="AddSubtask">Добавить</a>
     <a asp-controller="Home" asp-action="ChangeStatus">Начать</a>
-    <a>Удалить</a>
-    <a>Удалить</a>
-    <a>Удалить</a>
-    <a>Удалить</a>
+    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-status="@Model.Status">Завершить</a>
+    <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a>
+    <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Remove">Удалить</a>
 </div>
 <div class="task-content">
     <h1 class="task-name">@Model.Name</h1>
