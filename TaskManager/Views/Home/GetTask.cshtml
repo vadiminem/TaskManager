@@ -4,12 +4,19 @@
 
 @{
     Layout = null;
+    var status = null;
+    if(@Model.Status == 0)
+    {
+        status = @Localizer["ChangeStatusStart"];
+    }
+    else if(@Model.Status == 1)
+        status = @Localizer["ChangeStatusPause"];
 }
 
 
 <div class="control-panel">
     <a asp-controller="Home" asp-action="AddSubtask">@Localizer["AddSubtask"]</a>
-    <a asp-controller="Home" asp-action="ChangeStatus">@Localizer["ChangeStatus"]</a>
+    <a asp-controller="Home" asp-action="ChangeStatus">status</a>
     <a asp-controller="Home" asp-action="ChangeStatus" asp-route-status="@Model.Status">@Localizer["EndTask"]</a>
     <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["EditTask"]</a>
     <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Remove">@Localizer["RemoveTask"]</a>
