@@ -1,26 +1,33 @@
 ﻿@model TaskManager.Models.DbTask;
+@using TaskManager.Models;
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
 @{
-if(!ViewData["Layout"])
-    Layout = null;
-    string status = null; 
-
-    switch(status)
+    if (ViewData["Layout"] == "false")
     {
-        case @Model.Status.Assigned:
-status = Localizer["TaskStatusAssigned"];
-             break;
-case @Model.Status.InProgress:
-status = Localizer["TaskStatusInProgress"];
-             break;
-case @Model.Status.Paused:
-status = Localizer["TaskStatusPaused"];
-             break;
-case @Model.Status.Completed:
-status = Localizer["TaskStatusCompleted"];
-             break;
+        Layout = null;
+        ViewData["Title"] = Model.Name;
+    }
+
+
+    switch (Model.Status)
+    {
+        case Status.Assigned:
+            ViewData["Status"] = Localizer["TaskStatusAssigned"];
+            ViewData["ChangeStatusAction"] = Localizer["ChangeStatusStart"];
+            break;
+        case Status.InProgress:
+            ViewData["Status"] = Localizer["TaskStatusInProgress"];
+            ViewData["ChangeStatusAction"] = Localizer["ChangeStatusPause"];
+            break;
+        case Status.Paused:
+            ViewData["Status"] = Localizer["TaskStatusPaused"];
+            ViewData["ChangeStatusAction"] = Localizer["ChangeStatusStart"];
+            break;
+        case Status.Completed:
+            ViewData["Status"] = Localizer["TaskStatusCompleted"];
+            break;
 
     }
 }
@@ -28,8 +35,8 @@ status = Localizer["TaskStatusCompleted"];
 
 <div class="control-panel">
     <a asp-controller="Home" asp-action="Create" asp-route-id="@Model.Id">@Localizer["AddSubtask"]</a>
-    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@Model.Id" asp-route-status="@Model.Status">@status</a>
-    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@Model.Id" asp-route-status="@Model.Status.Completed">@Localizer["EndTask"]</a>
+    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@Model.Id" asp-route-status="@Model.Status">@ViewData["ChangeStatusAction"]</a>
+    <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@Model.Id" asp-route-status="@Status.Completed">@Localizer["EndTask"]</a>
     <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["EditTask"]</a>
     <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Id">@Localizer["RemoveTask"]</a>
 </div>
@@ -39,8 +46,8 @@ status = Localizer["TaskStatusCompleted"];
     <p class="task-description">@Model.Description</p>
     <p class="task-performers">@Model.Performers</p>
     <p class="task-dates">с @Model.RegistrationDate до @Model.EndDate</p>
-    <p class="task-status"><b>@Model.Status</b></p>
-    <p class="task-labour-input">@Model.LabourInput</p>
-    <p class="task-lead-time">@Model.LeadTime</p>
+    <p class="task-status"><b>@ViewData["Status"]</b></p>
+    <p class="task-labour-input">@TimeSpan.FromTicks(@Model.LabourInput)</p>
+    <p class="task-lead-time">@TimeSpan.FromTicks(@Model.LeadTime)</p>
 </div>
 

@@ -24,6 +24,10 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> GetTask(int id, bool layout = false)
         {
+            if (layout)
+                ViewData["Layout"] = "true";
+            else
+                ViewData["Layout"] = "false";
             var task = await db.Tasks.FindAsync(id);
             if (task != null)
             {
@@ -36,7 +40,9 @@ namespace TaskManager.Controllers
         [HttpGet]
         public IActionResult GetTasks()
         {
-            return Json(db.Tasks.OrderBy(t => t.ParentId).ThenByDescending(t => t.RegistrationDate).Select(t => new { t.Id, t.Name, t.ParentId }));
+            return Json(db.Tasks.OrderBy(t => t.ParentId)
+                .ThenByDescending(t => t.RegistrationDate)
+                .Select(t => new { t.Id, t.Name, t.ParentId }));
         }
 
         [HttpGet]
@@ -49,29 +55,67 @@ namespace TaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(DbTask task)
         {
-            task.LabourInput = task.EndDate - task.RegistrationDate;
+            task.LabourInput = (task.EndDate - task.RegistrationDate).Ticks;
             db.Tasks.Add(task);
             await db.SaveChangesAsync();
-            var t = await db.FindAsync(t);
-            return RedirectToAction("GetTask", "Home", new {id = t.Id, layout = true});
+            return RedirectToAction("GetTask", "Home", new { id = db.Tasks.Last().Id, layout = true });
         }
 
-public async Task<IActionResult> ChangeStatus(int id, Status status)
-{
-    var task = await db.FindAsync(id);
-/*if(status != task.Status.Completed)
-{
-    if(task.Status == status)
-{}
-else if(status == Status.Completed)
-{}
-}
-else 
-{
-if(status)
-}*/
+        public async Task<IActionResult> ChangeStatus(int id, Status status)
+        {
+            var task = await db.Tasks.FindAsync(id);
+            if (task.Status != Status.Completed)
+            {
+                if (status == Status.Completed)
+                {
+                    task.Status = Status.Completed;
+                }
+                else if (task.Status == Status.Assigned || task.Status == Status.Paused)
+                {
+                    task.Status = Status.InProgress;
+                }
+                else if (task.Status == Status.InProgress)
+                {
+                    task.Status = Status.Paused;
+                }
+                await db.SaveChangesAsync();
+            }
+            return RedirectToAction("GetTask", "Home", new { id = task.Id, layout = true });
+        }
 
-}
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var task = await db.Tasks.FindAsync(id);
+
+            return View(task);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(DbTask task)
+        {
+            var oldTask = await db.Tasks.FindAsync(task.Id);
+            oldTask.Name = task.Name;
+            oldTask.Description = task.Description;
+            oldTask.Performers = task.Performers;
+            oldTask.RegistrationDate = task.RegistrationDate;
+            oldTask.EndDate = task.EndDate;
+            await db.SaveChangesAsync();
+            return RedirectToAction("GetTask", "Home", new { id = task.Id, layout = true });
+        }
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            var task = await db.Tasks.FindAsync(id);
+            var inhTasks = db.Tasks.Where(t => t.ParentId == task.Id);
+            foreach (var t in inhTasks)
+            {
+                t.ParentId = task.ParentId;
+            }
+            db.Tasks.Remove(task);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

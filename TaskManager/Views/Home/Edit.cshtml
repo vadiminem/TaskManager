@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model TaskManager.Models.DbTask
+@{
+}
+<div class="control-panel">
+</div>
+<div class="task-content">
+    <form asp-controller="Home" asp-action="Edit">
+        <div>
+            <input type="hidden" asp-for="ParentId" value="@Model.ParentId" />
+        </div>
+        <div>
+            <input type="text" asp-for="Name" placeholder="@Model.Name" />
+        </div>
+        <div>
+            <textarea asp-for="Description" placeholder="@Model.Description"></textarea>
+        </div>
+        <div>
+            <input type="text" asp-for="Performers" placeholder="@Model.Performers" />
+        </div>
+        <div>
+            <input type="datetime-local" asp-for="RegistrationDate" placeholder="@Model.RegistrationDate" />
+            <input type="datetime-local" asp-for="EndDate" placeholder="@Model.EndDate" />
+        </div>
+        <div>
+            <input type="submit" class="form-submit" value="@Localizer["FormSubmit"]" />
+        </div>
+    </form>
+</div>
+
