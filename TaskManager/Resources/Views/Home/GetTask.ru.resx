@@ -165,5 +165,8 @@
   <data name="RemoveTask" xml:space="preserve">
     <value>Удалить</value>
   </data>
-
+  <data name="NewTaskAction" xml:space="preserve">
+    <value>Добавить задачу</value>
+    <comment>Кнопка для добавления новой задачи</comment>
+  </data>
 </root>

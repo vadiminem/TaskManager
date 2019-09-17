@@ -1,0 +1,37 @@
+﻿@model TaskManager.Models.Authorization.RegistrationModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link type="text/css" rel="stylesheet" href="~/css/site.css">
+    <title></title>
+
+</head>
+<body class="login">
+    <div class="auth-form">
+        <form asp-controller="Account" asp-action="Registration">
+            <div>
+                <span asp-validation-for="Email"></span>
+                <input type="email" asp-for="Email" />
+            </div>
+            <div>
+                <span asp-validation-for="Password"></span>
+                <input type="password" asp-for="Password" />
+            </div>
+            <div>
+                <span asp-validation-for="ConfirmPassword"></span>
+                <input type="password" asp-for="ConfirmPassword" />
+            </div>
+            <div>
+                <input type="submit" value="Регистрация" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>

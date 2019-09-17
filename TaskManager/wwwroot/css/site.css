@@ -95,6 +95,10 @@ html {
 .tasks-list li {
   display: block;
 }
+.tasks-list li .task-control {
+  float: right;
+  right: 10px;
+}
 .tasks-list li span {
   color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
@@ -116,4 +120,16 @@ html {
   font-size: 20px;
   cursor: pointer;
   text-decoration: none;
+}
+.login {
+  background-color: #ff8b47;
+}
+.login .auth-form {
+  margin: 30vh auto;
+  width: 400px;
+  height: 300px;
+  background-color: white;
+}
+.login .auth-form form {
+  text-align: center;
 }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private TasksContext db;
@@ -15,7 +17,6 @@ namespace TaskManager.Controllers
         {
             db = context;
         }
-
 
         public IActionResult Index()
         {
@@ -68,19 +69,25 @@ namespace TaskManager.Controllers
             {
                 if (status == Status.Completed)
                 {
-                    task.Status = Status.Completed;
+                    if (task.Status == Status.InProgress)
+                    {
+                        task.Status = Status.Completed;
+                        task.LeadTime += (DateTime.Now - task.StartDate).Ticks; // проверить
+                    }
                 }
                 else if (task.Status == Status.Assigned || task.Status == Status.Paused)
                 {
                     task.Status = Status.InProgress;
+                    task.StartDate = DateTime.Now;
                 }
                 else if (task.Status == Status.InProgress)
                 {
                     task.Status = Status.Paused;
+                    task.LeadTime += (DateTime.Now - task.StartDate).Ticks; // проверить
                 }
                 await db.SaveChangesAsync();
             }
-            return RedirectToAction("GetTask", "Home", new { id = task.Id, layout = true });
+            return RedirectToAction("GetTask", "Home", new { id = task.Id, layout = false });
         }
 
         [HttpGet]

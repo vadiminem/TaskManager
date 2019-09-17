@@ -126,6 +126,11 @@ html {
     li {
         display: block;
 
+        .task-control {
+            float: right;
+            right: 10px;
+        }
+
         span {
             color: rgba(0, 0, 0, 0.7);
             cursor: pointer;
@@ -151,5 +156,20 @@ html {
         font-size: 20px;
         cursor: pointer;
         text-decoration: none;
+    }
+}
+
+.login {
+    background-color: @base-color;
+
+    .auth-form {
+        margin: 30vh auto;
+        width: 400px;
+        height: 300px;
+        background-color: white;
+
+        form {
+            text-align: center;
+        }
     }
 }

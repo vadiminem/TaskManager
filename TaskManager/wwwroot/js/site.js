@@ -19,9 +19,19 @@ window.onload = function () {
             }
         });
     });
+    $('body').on('click', '.change-status-action', function () {
+        var url = 'https://localhost:44323/Home/ChangeStatus?id=' + $(this).data('id') + '&status=' + $(this).data('status');
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function (data) {
+                $('.right-content').html(data);
+            }
+        });
+    });
 };
 function AddToList(dataId, dataName) {
     return '<li data-id="' + dataId + '"><span data-id="' + dataId + '" class="task">' + dataName +
-        '</span><ul data-id="' + dataId + '"></ul></li>';
+        '</span><a href ="https://localhost:44323/Home/Create?id=' + dataId + '" class="task-control"><b>+</b></a><ul data-id="' + dataId + '"></ul></li>';
 }
 //# sourceMappingURL=site.js.map
