@@ -1,37 +1,26 @@
 ﻿@model TaskManager.Models.Authorization.RegistrationModel
 
 @{
-    Layout = null;
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Регистрация";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <link type="text/css" rel="stylesheet" href="~/css/site.css">
-    <title></title>
-
-</head>
-<body class="login">
-    <div class="auth-form">
-        <form asp-controller="Account" asp-action="Registration">
-            <div>
-                <span asp-validation-for="Email"></span>
-                <input type="email" asp-for="Email" />
-            </div>
-            <div>
-                <span asp-validation-for="Password"></span>
-                <input type="password" asp-for="Password" />
-            </div>
-            <div>
-                <span asp-validation-for="ConfirmPassword"></span>
-                <input type="password" asp-for="ConfirmPassword" />
-            </div>
-            <div>
-                <input type="submit" value="Регистрация" />
-            </div>
-        </form>
-    </div>
-</body>
-</html>
+    <form class="reg-form" asp-controller="Account" asp-action="Registration">
+        <div>
+            <span asp-validation-for="Email"></span>
+            <input type="email" asp-for="Email" placeholder="Email" />
+        </div>
+        <div>
+            <span asp-validation-for="Password"></span>
+            <input type="password" asp-for="Password" placeholder="Пароль" />
+        </div>
+        <div>
+            <span asp-validation-for="ConfirmPassword"></span>
+            <input type="password" asp-for="ConfirmPassword" placeholder="Пароль еще раз" />
+        </div>
+        <div>
+            <input type="submit" value="Зарегистрироваться" />
+        </div>
+        <a asp-controller="Account" asp-action="Login">Назад</a>
+    
+    </form>

@@ -1,33 +1,23 @@
 ﻿@model TaskManager.Models.Authorization.LoginModel
 
 @{
-    Layout = null;
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Вход";
 }
+<form asp-controller="Account" asp-action="Login">
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <link type="text/css" rel="stylesheet" href="~/css/site.css">
-    <title></title>
-</head>
-<body class="login">
-    <div class="auth-form">
-        <form asp-controller="Account" asp-action="Login">
-            <div>
-                <span asp-validation-for="Email"></span>
-                <input type="email" asp-for="Email"/>
-            </div>
-            <div>
-                <span asp-validation-for="Password"></span>
-                <input type="password" asp-for="Password"/>
-            </div>
-            <div>
-                <input type="submit" />
-                <a asp-controller="Account" asp-action="Registration">Регистрация</a>
-            </div>
-        </form>
+    <div>
+        <label asp-for="Email">Логин</label>
+        <input type="email" asp-for="Email" placeholder="Введите email" />
+        <span asp-validation-for="Email"></span>
     </div>
-</body>
-</html>
+    <div>
+        <label asp-for="Password">Пароль</label>
+        <input type="password" asp-for="Password" placeholder="Введите пароль" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div class="buttons">
+        <input class="button" type="submit" />
+        <a asp-controller="Account" asp-action="Registration"><input class="button" type="button" value="Регистрация" asp-controller="Account" asp-action="Registration" /></a>
+    </div>
+</form>

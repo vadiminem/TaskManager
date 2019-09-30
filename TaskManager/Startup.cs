@@ -36,9 +36,9 @@ namespace TaskManager
                 .AddViewLocalization();
 
             services.AddDbContext<TasksContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("DbTasksConnection")));
             services.AddDbContext<UserContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("DbUsersConnection")));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

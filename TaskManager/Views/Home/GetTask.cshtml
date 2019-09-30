@@ -34,27 +34,29 @@
 
 <div class="control-panel">
     @if (Model.Status != Status.Completed)
-{
+    {
         <a asp-controller="Home" asp-action="Create" asp-route-id="@Model.Id">@Localizer["AddSubtask"]</a>
         <a class="change-status-action" data-id="@Model.Id" data-status="@Model.Status">@ViewData["ChangeStatusAction"]</a>
         <a class="change-status-action" data-id="@Model.Id" data-status="@Status.Completed">@Localizer["EndTask"]</a>
         <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["EditTask"]</a>
-}
+    }
     <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Id">@Localizer["RemoveTask"]</a>
 </div>
 <div class="task-content">
     <h1 class="task-name">@Model.Name</h1>
     <h3></h3>
     <p class="task-description">@Model.Description</p>
-    <p class="task-performers">@Model.Performers</p>
-    <p class="task-dates">с @Model.RegistrationDate до @Model.EndDate</p>
-    <p class="task-status"><b>@ViewData["Status"]</b></p>
-    <p class="task-labour-input">@TimeSpan.FromTicks(@Model.LabourInput)</p>
-    @{
-            var leadTime= TimeSpan.FromTicks(Model.LeadTime);
+    <p class="task-status"> Статус: <b>@ViewData["Status"]</b></p>
+    <p class="task-labour-input">
+        @{
+            var leadTime = TimeSpan.FromTicks(Model.LeadTime);
         }
 
-    <p class="task-lead-time">@(new TimeSpan(leadTime.Days, leadTime.Hours, leadTime.Minutes, leadTime.Seconds))</p>
+        @(new TimeSpan(leadTime.Days, leadTime.Hours, leadTime.Minutes, leadTime.Seconds)) / @TimeSpan.FromTicks(@Model.LabourInput)
+    </p>
+    <p class="task-performers">Исполнители: @Model.Performers</p>
+    <p class="task-dates">Время выполнения: с @Model.RegistrationDate до @Model.EndDate</p>
+
 </div>
 
 @section Tasks {

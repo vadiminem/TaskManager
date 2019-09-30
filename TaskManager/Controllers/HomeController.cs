@@ -71,8 +71,16 @@ namespace TaskManager.Controllers
                 {
                     if (task.Status == Status.InProgress)
                     {
-                        task.Status = Status.Completed;
-                        task.LeadTime += (DateTime.Now - task.StartDate).Ticks; // проверить
+                        var tasks = db.Tasks.Where(t => t.ParentId == task.Id);
+                        if (tasks.Where(t => t.Status == Status.Completed).Count() == tasks.Count())
+                        {
+                            task.Status = Status.Completed;
+                            task.LeadTime += (DateTime.Now - task.StartDate).Ticks;
+                        }
+                        else
+                        {
+                            // Отправить сообщение об ошибке.
+                        }
                     }
                 }
                 else if (task.Status == Status.Assigned || task.Status == Status.Paused)
