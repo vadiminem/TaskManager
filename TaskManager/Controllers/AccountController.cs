@@ -40,7 +40,7 @@ namespace TaskManager.Controllers
                 }
                 ModelState.AddModelError("", "Некорректные логин или пароль");
             }
-            return View();
+            return View(model);
         }
 
         [HttpGet]

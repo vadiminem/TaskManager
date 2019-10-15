@@ -3,8 +3,10 @@
 
 @model TaskManager.Models.DbTask
 @{
+    ViewData["Title"] = "Редактирование задачи " + Model.Name;
 }
 <div class="control-panel">
+    <p>Редактирование задачи "@Model.Name"</p>
 </div>
 <div class="task-content">
     <form asp-controller="Home" asp-action="Edit">
@@ -12,21 +14,43 @@
             <input type="hidden" asp-for="ParentId" value="@Model.ParentId" />
         </div>
         <div>
+            Название <br />
             <input type="text" asp-for="Name" placeholder="@Model.Name" />
+            <span asp-validation-for="Name"></span>
         </div>
         <div>
+            Описание <br />
             <textarea asp-for="Description" placeholder="@Model.Description"></textarea>
+            <span asp-validation-for="Description"></span>
         </div>
         <div>
+            Исполнители <br />
             <input type="text" asp-for="Performers" placeholder="@Model.Performers" />
+            <span asp-validation-for="Performers"></span>
         </div>
         <div>
-            <input type="datetime-local" asp-for="RegistrationDate" placeholder="@Model.RegistrationDate" />
-            <input type="datetime-local" asp-for="EndDate" placeholder="@Model.EndDate" />
+            с <input type="datetime-local" asp-for="RegistrationDate" placeholder="@Model.RegistrationDate" />
+            <span asp-validation-for="RegistrationDate"></span>
         </div>
         <div>
-            <input type="submit" class="form-submit" value="@Localizer["FormSubmit"]" />
+            до <input type="datetime-local" asp-for="EndDate" placeholder="@Model.EndDate" />
+            <span asp-validation-for="EndDate"></span>
+        </div>
+        <div>
+            <input type="submit" class="form-submit" value="Сохранить" />
         </div>
     </form>
 </div>
 
+@section Tasks {
+    <div class="tasks-list">
+        <ul class="task-names"></ul>
+    </div>
+    <div class="new-task-action">
+        <a asp-controller="Home" asp-action="Create">Добавить задачу</a>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}

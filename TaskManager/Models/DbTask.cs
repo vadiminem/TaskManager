@@ -10,5 +10,6 @@ namespace TaskManager.Models
         public int Id { get; set; }
         public int ParentId { get; set; }
         public DateTime StartDate { get; set; }
+        public int Level { get; set; }
     }
 }

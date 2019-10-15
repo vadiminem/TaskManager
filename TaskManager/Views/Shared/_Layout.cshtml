@@ -4,33 +4,61 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Red+Hat+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css" />
 </head>
-<body>
-    <div class="menu">
-        <a asp-controller="Home" asp-action="Index">Главная</a>
-    </div>
-    <div class="content">
-        <div class="main-content">
-            <main role="main">
-                <div class="left-content">
-                    @RenderSection("Tasks", required: false)
-                </div>
-                <div class="right-content">
-                    @RenderBody()
-                </div>
-            </main>
+<body class="layout">
+    <nav id="sidebar" class="active d-flex flex-column">
+        <div class="sidebar-header">
+            <h3>Task Management</h3>
+            <strong>TM</strong>
         </div>
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a id="new-task-action" href="#">
+                    <i class="fas fa-plus"></i>
+                    New task
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign out
+                </a>
+            </li>
+        </ul>
+        <div class="text-center mt-auto">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+                <span>Toggle</span>
+            </button>
+        </div>
+    </nav>
+    <div id="content">
+        <!--<div class="text-center">
+            <h2>Текущие задачи</h2>
+        </div>-->
+        <ul id="tasks-list" class="mb-3 list-unstyled components">
+        </ul>
+    </div>
+    <div id="task-info" class="shadow-sm">
     </div>
 
+    @RenderBody()
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/font-awesome/js/fontawesome.min.js"></script>
+        <script src="~/lib/font-awesome/js/solid.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -40,7 +68,6 @@
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
         </script>
     </environment>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

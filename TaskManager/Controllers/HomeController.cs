@@ -43,7 +43,7 @@ namespace TaskManager.Controllers
         {
             return Json(db.Tasks.OrderBy(t => t.ParentId)
                 .ThenByDescending(t => t.RegistrationDate)
-                .Select(t => new { t.Id, t.Name, t.ParentId }));
+                .Select(t => new { t.Id, t.Name, t.ParentId, t.Level }));
         }
 
         [HttpGet]
@@ -56,10 +56,22 @@ namespace TaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(DbTask task)
         {
-            task.LabourInput = (task.EndDate - task.RegistrationDate).Ticks;
-            db.Tasks.Add(task);
-            await db.SaveChangesAsync();
-            return RedirectToAction("GetTask", "Home", new { id = db.Tasks.Last().Id, layout = true });
+            if (ModelState.IsValid)
+            {
+                int parentLevel = 0;
+                if (task.ParentId != -1)
+                {
+                    var parent = await db.Tasks.FindAsync(task.ParentId);
+                    parentLevel = parent.Level;
+                }
+                task.LabourInput = (task.EndDate - task.RegistrationDate).Ticks;
+                task.Level = parentLevel + 1;
+                db.Tasks.Add(task);
+                await db.SaveChangesAsync();
+                return RedirectToAction("GetTask", "Home", new { id = db.Tasks.Last().Id, layout = true });
+            }
+            else
+                return View(task);
         }
 
         public async Task<IActionResult> ChangeStatus(int id, Status status)
@@ -95,7 +107,8 @@ namespace TaskManager.Controllers
                 }
                 await db.SaveChangesAsync();
             }
-            return RedirectToAction("GetTask", "Home", new { id = task.Id, layout = false });
+            
+            return RedirectToAction("GetTask", new { id = task.Id });
         }
 
         [HttpGet]
@@ -103,7 +116,7 @@ namespace TaskManager.Controllers
         {
             var task = await db.Tasks.FindAsync(id);
 
-            return View(task);
+            return View("Create", task);
         }
 
         [HttpPost]
@@ -129,7 +142,7 @@ namespace TaskManager.Controllers
             }
             db.Tasks.Remove(task);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

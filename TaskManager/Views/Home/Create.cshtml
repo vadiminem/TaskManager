@@ -3,31 +3,39 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = @Localizer["Title"];
+    Layout = null;
+    ViewData["Title"] = "Добавить задачу";
     ViewData["NewTaskAction"] = @Localizer["NewTaskAction"];
 }
-<div class="control-panel">
-</div>
-<div class="task-content">
+
+<div id="task">
     <form asp-controller="Home" asp-action="Create">
         <div>
             <input type="hidden" asp-for="ParentId" value="@ViewData["ParentId"]" />
         </div>
-        <div>
-            <input type="text" asp-for="Name" placeholder="@Localizer["FormName"]" />
+        <div class="row">
+            <span class="col-3" id="name">название</span>
+            <span class="col-7" id="value"><input type="text" asp-for="Name" placeholder="Сделать курсовой"></span>
         </div>
-        <div>
-            <textarea asp-for="Description" placeholder="@Localizer["FormDescription"]"></textarea>
+        <div class="row">
+            <span class="col-3" id="name">описание</span>
+            <span class="col-7" id="value"><textarea asp-for="Description" placeholder="Описание для задачи"></textarea></span>
         </div>
-        <div>
-            <input type="text" asp-for="Performers" placeholder="@Localizer["FormPerformers"]" />
+        <div class="row">
+            <span class="col-3" id="name">исполнители</span>
+            <span class="col-7" id="value"><input type="text" asp-for="Performers" placeholder="Олег, Сергей, Павел"></span>
         </div>
-        <div>
-            <input type="datetime-local" asp-for="RegistrationDate" placeholder="@Localizer["FormRegistrationDate"]" />
-            <input type="datetime-local" asp-for="EndDate" placeholder="@Localizer["FormEndDate"]" />
+        <div class="row">
+            <span class="col-3" id="name">начинается</span>
+            <span class="col-7" id="value"><input type="datetime-local" asp-for="RegistrationDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"></span>
         </div>
-        <div>
-            <input type="submit" class="form-submit" value="@Localizer["FormSubmit"]" />
+        <div class="row">
+            <span class="col-3" id="name">заканчивается</span>
+            <span class="col-7" id="value"><input type="datetime-local" asp-for="EndDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"></span>
         </div>
+        <div class="text-center">
+            <button class="btn btn-primary" id="submit-form" type="button">Добавить</button>
+        </div>
+        <div class="border-bottom"></div>
     </form>
 </div>
