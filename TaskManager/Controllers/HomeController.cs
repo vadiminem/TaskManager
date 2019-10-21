@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Interfaces;
 using TaskManager.Models;
 
 namespace TaskManager.Controllers
@@ -12,10 +13,10 @@ namespace TaskManager.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private TasksContext db;
-        public HomeController(TasksContext context)
+        private IStorageRepository repository;
+        public HomeController(IStorageRepository repository)
         {
-            db = context;
+            this.repository = repository;
         }
 
         public IActionResult Index()
@@ -23,13 +24,9 @@ namespace TaskManager.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetTask(int id, bool layout = false)
+        public async Task<IActionResult> GetTask(int id)
         {
-            if (layout)
-                ViewData["Layout"] = "true";
-            else
-                ViewData["Layout"] = "false";
-            var task = await db.Tasks.FindAsync(id);
+            var task = repository.FindTask(id);
             if (task != null)
             {
                 return View(task);
@@ -41,8 +38,7 @@ namespace TaskManager.Controllers
         [HttpGet]
         public IActionResult GetTasks()
         {
-            return Json(db.Tasks.OrderBy(t => t.ParentId)
-                .ThenByDescending(t => t.RegistrationDate)
+            return Json(repository.GetTasks()
                 .Select(t => new { t.Id, t.Name, t.ParentId, t.Level }));
         }
 
@@ -61,14 +57,13 @@ namespace TaskManager.Controllers
                 int parentLevel = 0;
                 if (task.ParentId != -1)
                 {
-                    var parent = await db.Tasks.FindAsync(task.ParentId);
+                    var parent = repository.FindTask(task.ParentId);
                     parentLevel = parent.Level;
                 }
                 task.LabourInput = (task.EndDate - task.RegistrationDate).Ticks;
                 task.Level = parentLevel + 1;
-                db.Tasks.Add(task);
-                await db.SaveChangesAsync();
-                return RedirectToAction("GetTask", "Home", new { id = db.Tasks.Last().Id, layout = true });
+                var generatedId = repository.InsertTask(task);
+                return RedirectToAction("GetTask", "Home", new { id = generatedId, layout = true });
             }
             else
                 return View(task);
@@ -76,14 +71,14 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> ChangeStatus(int id, Status status)
         {
-            var task = await db.Tasks.FindAsync(id);
+            var task = repository.FindTask(id);
             if (task.Status != Status.Completed)
             {
                 if (status == Status.Completed)
                 {
                     if (task.Status == Status.InProgress)
                     {
-                        var tasks = db.Tasks.Where(t => t.ParentId == task.Id);
+                        var tasks = repository.GetTasks().Where(t => t.ParentId == task.Id);
                         if (tasks.Where(t => t.Status == Status.Completed).Count() == tasks.Count())
                         {
                             task.Status = Status.Completed;
@@ -105,7 +100,6 @@ namespace TaskManager.Controllers
                     task.Status = Status.Paused;
                     task.LeadTime += (DateTime.Now - task.StartDate).Ticks; // проверить
                 }
-                await db.SaveChangesAsync();
             }
             
             return RedirectToAction("GetTask", new { id = task.Id });
@@ -114,7 +108,7 @@ namespace TaskManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var task = await db.Tasks.FindAsync(id);
+            var task = repository.FindTask(id);
 
             return View("Create", task);
         }
@@ -122,26 +116,24 @@ namespace TaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(DbTask task)
         {
-            var oldTask = await db.Tasks.FindAsync(task.Id);
+            var oldTask = repository.FindTask(task.Id);
             oldTask.Name = task.Name;
             oldTask.Description = task.Description;
             oldTask.Performers = task.Performers;
             oldTask.RegistrationDate = task.RegistrationDate;
             oldTask.EndDate = task.EndDate;
-            await db.SaveChangesAsync();
             return RedirectToAction("GetTask", "Home", new { id = task.Id, layout = true });
         }
 
         public async Task<IActionResult> Remove(int id)
         {
-            var task = await db.Tasks.FindAsync(id);
-            var inhTasks = db.Tasks.Where(t => t.ParentId == task.Id);
+            var task = repository.FindTask(id);
+            var inhTasks = repository.GetTasks().Where(t => t.ParentId == task.Id);
             foreach (var t in inhTasks)
             {
                 t.ParentId = task.ParentId;
             }
-            db.Tasks.Remove(task);
-            await db.SaveChangesAsync();
+            repository.RemoveTask(task.Id);
             return Ok();
         }
 

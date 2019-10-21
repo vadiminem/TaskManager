@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TaskManager.Interfaces;
 using TaskManager.Models;
 using TaskManager.Models.Authorization;
 
@@ -13,10 +14,10 @@ namespace TaskManager.Controllers
     public class AccountController : Controller
     {
 
-        private UserContext db;
-        public AccountController(UserContext context)
+        private IStorageRepository repository;
+        public AccountController(IStorageRepository repository)
         {
-            db = context;
+            this.repository = repository;
         }
 
         [HttpGet]
@@ -31,7 +32,7 @@ namespace TaskManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                var user = repository.FindUser(model.Email, model.Password);
                 if (user != null)
                 {
                     await Authenticate(user.Email);
@@ -53,20 +54,22 @@ namespace TaskManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registration(RegistrationModel model)
         {
-            if (ModelState.IsValid)
+            var user = repository.FindUser(model.Email);
+            if (user == null)
             {
-                var user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-                if (user == null)
-                {
-                    db.Users.Add(new User { Email = model.Email, Password = model.Password });
-                    await db.SaveChangesAsync();
-                    await Authenticate(model.Email);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Некорректные логин или пароль");
-                }
+                repository.InsertUser(
+                    new User()
+                    {
+                        Email = model.Email,
+                        Password = model.Password,
+                        Username = model.Username
+                    });
+                await Authenticate(model.Email);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные логин или пароль");
             }
             return View(model);
         }
