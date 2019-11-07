@@ -1,5 +1,4 @@
-﻿using System;
-using TaskManager.Settings;
+﻿using TaskManager.Settings;
 using ThinkingHome.Migrator;
 
 namespace TaskManager.Mirgations

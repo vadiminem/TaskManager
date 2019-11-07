@@ -27,14 +27,35 @@ namespace TaskManager.Repositories
             }
         }
 
-        public User FindUser(string email, string password = null)
+        public User FindUser(string email, string password)
         {
             using (var connection = new NpgsqlConnection(settings.ConnectionString))
             {
-                if (password != null)
-                    return connection.Get<User>(new { email, password });
+                if (password == null)
+                {
+                    var predicate = Predicates.Field<User>(u => u.Email, Operator.Eq, email);
+                    var users = connection.GetList<User>(predicate).ToList();
+                    return users.Count == 0 ? null : users.First();
+                }
                 else
-                    return connection.Get<User>(email);
+                {
+                    var pg = new PredicateGroup { Operator = GroupOperator.And, Predicates = new List<IPredicate>() };
+                    pg.Predicates.Add(Predicates.Field<User>(u => u.Email, Operator.Eq, email));
+                    pg.Predicates.Add(Predicates.Field<User>(u => u.Password, Operator.Eq, password));
+                    return connection.GetList<User>(pg).First();
+                }
+            }
+        }
+
+        public User FindUserByUsername(string username)
+        {
+            using (var connection = new NpgsqlConnection(settings.ConnectionString))
+            {
+                if (username != null)
+                {
+                    return connection.GetList<User>().Where(u => u.Username == username).First() ?? null;
+                }
+                else return null;
             }
         }
 
@@ -51,7 +72,7 @@ namespace TaskManager.Repositories
         {
             using (var connection = new NpgsqlConnection(settings.ConnectionString))
             {
-                return connection.Insert<DbTask>(task);
+                return connection.Insert(task);
             }
         }
 

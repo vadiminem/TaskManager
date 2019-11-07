@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Models
 {
-    public class DbTask:Task
+    public class DbTask : Task
     {
         public int Id { get; set; }
         public int ParentId { get; set; }

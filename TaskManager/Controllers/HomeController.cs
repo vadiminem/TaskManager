@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,6 +62,11 @@ namespace TaskManager.Controllers
                 task.LabourInput = (task.EndDate - task.RegistrationDate).Ticks;
                 task.Level = parentLevel + 1;
                 var generatedId = repository.InsertTask(task);
+                var taskPerformers = task.Performers.Split(',');
+                foreach (var p in taskPerformers)
+                {
+                    repository.InsertTaskPerformers(new TasksPerformersModel { TaskId = generatedId, UserId = repository.FindUserByUsername(p.Trim()).Id });
+                }
                 return RedirectToAction("GetTask", "Home", new { id = generatedId, layout = true });
             }
             else
@@ -101,7 +105,7 @@ namespace TaskManager.Controllers
                     task.LeadTime += (DateTime.Now - task.StartDate).Ticks; // проверить
                 }
             }
-            
+
             return RedirectToAction("GetTask", new { id = task.Id });
         }
 

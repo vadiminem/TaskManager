@@ -8,7 +8,7 @@ namespace TaskManager.Models
     public class TasksPerformersModel
     {
         public int Id { get; set; }
-        public DbTask Task { get; set; }
-        public User User { get; set; }
+        public int TaskId { get; set; }
+        public int UserId { get; set; }
     }
 }

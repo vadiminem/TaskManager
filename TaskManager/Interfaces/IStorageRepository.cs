@@ -10,6 +10,7 @@ namespace TaskManager.Interfaces
     {
         DbTask FindTask(int id);
         User FindUser(string email, string password = null);
+        User FindUserByUsername(string username);
         DbTask[] GetTasks();
         int InsertTask(DbTask task);
         int InsertUser(User user);
