@@ -34,7 +34,7 @@ namespace TaskManager.Controllers
                 var user = repository.FindUser(model.Email, model.Password);
                 if (user != null)
                 {
-                    await Authenticate(user.Email);
+                    await Authenticate(user.Username);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -63,7 +63,7 @@ namespace TaskManager.Controllers
                         Password = model.Password,
                         Username = model.Username
                     });
-                await Authenticate(model.Email);
+                await Authenticate(model.Username);
                 return RedirectToAction("Index", "Home");
             }
             else

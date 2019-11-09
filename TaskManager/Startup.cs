@@ -92,6 +92,7 @@ namespace TaskManager
 
 
             applicationLifetime.ApplicationStarted.Register(OnApplicationStarted);
+            applicationLifetime.ApplicationStopped.Register(OnApplicationStopped);
 
 
             app.UseHttpsRedirection();
@@ -123,5 +124,9 @@ namespace TaskManager
             }
         }
 
+        protected void OnApplicationStopped()
+        {
+
+        }
     }
 }

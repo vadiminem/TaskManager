@@ -202,6 +202,7 @@ body {
 }
 #content {
   width: 70%;
+  min-width: 500px;
   padding: 20px;
   min-height: 100vh;
   transition: all 0.3s;
@@ -223,6 +224,7 @@ body {
 }
 #task-info {
   width: 30%;
+  min-width: 350px;
   min-height: 100vh;
   transition: all 0.3s;
 }

@@ -51,9 +51,12 @@ namespace TaskManager.Repositories
         {
             using (var connection = new NpgsqlConnection(settings.ConnectionString))
             {
+                
                 if (username != null)
                 {
-                    return connection.GetList<User>().Where(u => u.Username == username).First() ?? null;
+                    var predicate = Predicates.Field<User>(u => u.Username, Operator.Eq, username);
+                    var users = connection.GetList<User>(predicate).ToList();
+                    return users.FirstOrDefault();
                 }
                 else return null;
             }
@@ -66,6 +69,28 @@ namespace TaskManager.Repositories
                 return connection.GetList<DbTask>().OrderBy(t => t.ParentId)
                 .ThenByDescending(t => t.RegistrationDate).ToArray();
             }
+        }
+
+        public DbTask[] GetTasksForUser(User user)
+        {
+            using (var connection = new NpgsqlConnection(settings.ConnectionString))
+            {
+                var tasksIds = connection.GetList<TasksPerformersModel>()
+                    .Where(t => t.UserId == user.Id)
+                    .Select(t => t.TaskId);
+
+                if (tasksIds.Count() > 0)
+                {
+                    var tasks = new List<DbTask>();
+                    foreach (var id in tasksIds.ToList())
+                    {
+                        var task = connection.Get<DbTask>(id);
+                        tasks.Add(task);
+                    }
+                    return tasks.ToArray();
+                }
+            }
+            return null;
         }
 
         public int InsertTask(DbTask task)
@@ -96,7 +121,10 @@ namespace TaskManager.Repositories
         {
             using (var connection = new NpgsqlConnection(settings.ConnectionString))
             {
-                connection.Delete<DbTask>(id);
+                var predicate = Predicates.Field<DbTask>(t => t.Id, Operator.Eq, id);
+                connection.Delete<DbTask>(predicate);
+                predicate = Predicates.Field<TasksPerformersModel>(t => t.TaskId, Operator.Eq, id);
+                connection.Delete<TasksPerformersModel>(predicate);
             }
         }
 

@@ -37,14 +37,19 @@ namespace TaskManager.Controllers
         [HttpGet]
         public IActionResult GetTasks()
         {
-            return Json(repository.GetTasks()
-                .Select(t => new { t.Id, t.Name, t.ParentId, t.Level }));
+            var user = repository.FindUserByUsername(User.Identity.Name);
+            var result = repository.GetTasksForUser(user);
+            if (result != null)
+                return Json(result.Select(t => new { t.Id, t.Name, t.ParentId, t.Level }));
+
+            return null;
         }
 
         [HttpGet]
         public IActionResult Create(int? id)
         {
             ViewData["ParentId"] = id ?? -1;
+            ViewData["User"] = User.Identity.Name;
             return View();
         }
 
@@ -63,9 +68,16 @@ namespace TaskManager.Controllers
                 task.Level = parentLevel + 1;
                 var generatedId = repository.InsertTask(task);
                 var taskPerformers = task.Performers.Split(',');
-                foreach (var p in taskPerformers)
+                try
                 {
-                    repository.InsertTaskPerformers(new TasksPerformersModel { TaskId = generatedId, UserId = repository.FindUserByUsername(p.Trim()).Id });
+                    foreach (var p in taskPerformers)
+                    {
+                        repository.InsertTaskPerformers(new TasksPerformersModel { TaskId = generatedId, UserId = repository.FindUserByUsername(p.Trim()).Id });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Ok(ex.Message);
                 }
                 return RedirectToAction("GetTask", "Home", new { id = generatedId, layout = true });
             }
@@ -105,8 +117,8 @@ namespace TaskManager.Controllers
                     task.LeadTime += (DateTime.Now - task.StartDate).Ticks; // проверить
                 }
             }
-
-            return RedirectToAction("GetTask", new { id = task.Id });
+            repository.UpdateTask(task);
+            return RedirectToAction("GetTask", new { id = task.Id, layout = true});
         }
 
         [HttpGet]
