@@ -1,0 +1,86 @@
+﻿@model TaskManager.Models.DbTask;
+@using TaskManager.Models;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = null;
+
+    ViewData["Title"] = Model.Name;
+
+    switch (Model.Status)
+    {
+        case Status.Assigned:
+            ViewData["Status"] = Localizer["TaskStatusAssigned"];
+            ViewData["ChangeStatusAction"] = Localizer["ChangeStatusStart"];
+            break;
+        case Status.InProgress:
+            ViewData["Status"] = Localizer["TaskStatusInProgress"];
+            ViewData["ChangeStatusAction"] = Localizer["ChangeStatusPause"];
+            break;
+        case Status.Paused:
+            ViewData["Status"] = Localizer["TaskStatusPaused"];
+            ViewData["ChangeStatusAction"] = Localizer["ChangeStatusStart"];
+            break;
+        case Status.Completed:
+            ViewData["Status"] = Localizer["TaskStatusCompleted"];
+            break;
+
+    }
+}
+
+
+<!--<div class="control-panel">
+    @if (Model.Status != Status.Completed)
+    {
+        <a asp-controller="Home" asp-action="Create" asp-route-id="@Model.Id">@Localizer["AddSubtask"]</a>
+        <a class="change-status-action" data-id="@Model.Id" data-status="@Model.Status">@ViewData["ChangeStatusAction"]</a>
+        <a class="change-status-action" data-id="@Model.Id" data-status="@Status.Completed">@Localizer["EndTask"]</a>
+        <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id">@Localizer["EditTask"]</a>
+    }
+    <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Id">@Localizer["RemoveTask"]</a>
+</div>-->
+<div id="task">
+    <div class="text-center border-bottom">
+        <h6>@Model.Name</h6>
+    </div>
+    <div class="row">
+        <span class="col-3" id="name">описание</span>
+        <span class="col-8" id="value">@Model.Description</span>
+    </div>
+    <div class="row">
+        <span class="col-3" id="name">статус</span>
+        <span class="col-8 font-weight-bold" id="value"><span id="task-status">@ViewData["Status"]</span></span>
+    </div>
+    <div class="row">
+        <span class="col-3" id="name">исполнители</span>
+        <span class="col-8" id="value"><a href="#">@Model.Performers</a></span>
+    </div>
+    <div class="row">
+        <span class="col-3" id="name">начинается</span>
+        <span class="col-8" id="value">@Model.RegistrationDate</span>
+    </div>
+    <div class="row">
+        <span class="col-3" id="name">заканчивается</span>
+        <span class="col-8" id="value">@Model.EndDate</span>
+    </div>
+    @{
+        var leadTime = TimeSpan.FromTicks(Model.LeadTime);
+    }
+</div>
+
+<div id="task-control-panel">
+    <div class="text-left float-left">
+        <span id="value">@(new TimeSpan(leadTime.Days, leadTime.Hours, leadTime.Minutes, leadTime.Seconds)) / @TimeSpan.FromTicks(@Model.LabourInput)</span>
+    </div>
+    <ul class="list-inline text-center float-right">
+        <li class="list-inline-item"><a id="add-subtask-action" data-id="@Model.Id"><i class="fas fa-plus-square"></i></a></li>
+        <li class="list-inline-item"><a id="start-action" data-id="@Model.Id" data-status="@Model.Status"><i class="fas fa-play"></i></a></li>
+        <li class="list-inline-item"><a id="pause-action" data-id="@Model.Id" data-status="@Model.Status"><i class="fas fa-stop"></i></a></li>
+        <li class="list-inline-item"><a id="edit-action" data-id="@Model.Id"><i class="fas fa-pen"></i></a></li>
+        <li class="list-inline-item"><a id="complete-action" data-id="@Model.Id" data-status="@Status.Completed"><i class="fas fa-flag-checkered"></i></a></li>
+        <li class="list-inline-item"><a id="remove-action" data-id="@Model.Id"><i class="fas fa-trash-alt"></i></a></li>
+    </ul>
+</div>
+
+<div class="border-bottom"></div>

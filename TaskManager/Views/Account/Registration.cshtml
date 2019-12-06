@@ -1,0 +1,34 @@
+﻿@model TaskManager.Models.Authorization.RegistrationModel
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Регистрация";
+}
+
+<form class="form-signup" asp-controller="Account" asp-action="Registration">
+    <div class="py-5 text-center">
+        <h1>Registration</h1>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email">Email</label>
+        <input type="email" class="form-control" asp-for="Email" placeholder="you@example.com" />
+        <div class="invalid-feedback">Please enter your email</div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Username">Username</label>
+        <input type="text" class="form-control" asp-for="Username" />
+        <div class="invalid-feedback">Please enter your Username</div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password">Password</label>
+        <input type="password" class="form-control" asp-for="Password" />
+        <div class="invalid-feedback">Please enter your password</div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ConfirmPassword">Confirm Password</label>
+        <input type="password" class="form-control" asp-for="ConfirmPassword" />
+        <div class="invalid-feedback">Please enter your password</div>
+
+    </div>
+    <button class="btn btn-primary btn-lg" type="submit">Sign Up</button>
+</form>
